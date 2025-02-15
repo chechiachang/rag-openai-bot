@@ -25,7 +25,7 @@ class ConversationalRetrievalAgent:
     def setup_bot(self):
         # Create a retriever from the vector database
         retriever = self.vectordb.as_retriever(
-            search_type="mmr",
+            search_type="similarity",
             search_kwargs={"k": 6}
         )
         # Create a ConversationalRetrievalChain from the OpenAI model and the retriever
