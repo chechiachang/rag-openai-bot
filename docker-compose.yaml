@@ -1,5 +1,6 @@
 services:
   qdrant:
+    container_name: qdrant
     image: qdrant/qdrant:v1.13.3
     restart: on-failure
     ports:
