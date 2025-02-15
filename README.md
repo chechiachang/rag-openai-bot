@@ -1,1 +1,1 @@
-# python-template
+# rag-openai-bot

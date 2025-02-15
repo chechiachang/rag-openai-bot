@@ -1,14 +1,16 @@
 [project]
-name = "python-template"
+name = "bot"
 version = "0.1.0"
 description = ""
 readme = "README.md"
-authors = [{ name = "narumi", email = "toucans-cutouts0f@icloud.com" }]
+authors = [{ name = "chechiachang", email = "untru1999@chechia.net" }]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "loguru>=0.7.3",
+]
 
 [project.scripts]
-python-template = "python_template.cli:main"
+bot = "bot.cli:main"
 
 [build-system]
 requires = ["hatchling"]
