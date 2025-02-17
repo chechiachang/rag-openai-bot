@@ -15,7 +15,8 @@ dependencies = [
 ]
 
 [project.scripts]
-bot = "bot.cli:main"
+embedding = "bot.cli:embedding"
+qa = "bot.cli:qa"
 
 [build-system]
 requires = ["hatchling"]
