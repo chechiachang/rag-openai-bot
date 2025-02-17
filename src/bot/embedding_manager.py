@@ -1,10 +1,14 @@
 import os
 
+from ratelimit import limits
+import hashlib
+from uuid import uuid4
+
+
 from langchain_openai import AzureOpenAIEmbeddings
 from langchain_qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance
-from uuid import uuid4
 
 class EmbeddingManager:
     def __init__(self):
@@ -12,9 +16,9 @@ class EmbeddingManager:
             model='text-embedding-3-large',
             azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
             api_key=os.environ["AZURE_OPENAI_API_KEY"],
-            openai_api_version=os.environ["AZURE_OPENAI_API_VERSION"]
+            openai_api_version=os.environ["AZURE_OPENAI_API_VERSION"],
         )
-        # intialize the vector store
+        # initialize the qdrant client
         self.client=QdrantClient(host="localhost", port=6333)
         if not self.client.collection_exists('demo_collection'):
             self.client.create_collection(
@@ -33,11 +37,20 @@ class EmbeddingManager:
         
     # Method to create and persist embeddings
     def create_and_persist_embeddings(self, all_sections):
-        # add documents to the vector store
-        uuids = [str(uuid4()) for _ in range(len(all_sections))]
+        for section in all_sections:
+            self.add_document(section)
+
+    @limits(calls=10, period=1)
+    def add_document(self, document):
+        # hash the source (url) to get a unique id
+        print('Embedding progress:' + document.metadata['source'] + document.metadata['split'])
+        hash = hashlib.sha256(
+            str(document.metadata['source'] + document.metadata['split']).encode('utf-8')
+        ).hexdigest()[::2]
         self.vectordb.add_documents(
-            documents=all_sections,
-            ids=uuids
+            documents=[document],
+            #ids=[str(uuid4())]
+            ids=[hash]
         )
 
     def count(self):

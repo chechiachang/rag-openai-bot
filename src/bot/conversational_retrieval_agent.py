@@ -1,5 +1,7 @@
 from langchain_openai import AzureChatOpenAI
 from langchain.chains import ConversationalRetrievalChain
+from langchain_core.rate_limiters import InMemoryRateLimiter
+
 import os
 
 class ConversationalRetrievalAgent:
@@ -11,6 +13,10 @@ class ConversationalRetrievalAgent:
             azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
             azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
             openai_api_version=os.environ["AZURE_OPENAI_API_VERSION"],
+            #rate_limiter=InMemoryRateLimiter(
+            #    requests_per_second=60,
+            #    check_every_n_seconds=1,
+            #)
         )
         self.chat_history = []
 
@@ -46,7 +52,7 @@ class ConversationalRetrievalAgent:
             print("Chat with previous history")
             context_entries = [f"Question: {q}\nAnswer: {a}" for q, a in self.chat_history[-3:]]
             context = "\n\n".join(context_entries)
-            prompt = f"Using the context provided by recent conversations, answer the new question in a concise and informative. Limit your answer to a maximum of three sentences.\n\nContext of recent conversations:\n{context}\n\nNew question: {question}\n\Answer:"
+            prompt = f"Using the context provided by recent conversations, answer the new question in a concise and informative. Limit your answer to a maximum of three sentences.\n\nContext of recent conversations:\n{context}\n\nNew question: {question}\nAnswer:"
         
         return prompt
     

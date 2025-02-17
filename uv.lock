@@ -150,6 +150,7 @@ dependencies = [
     { name = "langchain-qdrant" },
     { name = "loguru" },
     { name = "markdown" },
+    { name = "ratelimit" },
     { name = "unstructured" },
 ]
 
@@ -168,6 +169,7 @@ requires-dist = [
     { name = "langchain-qdrant", specifier = ">=0.2.0" },
     { name = "loguru", specifier = ">=0.7.3" },
     { name = "markdown", specifier = ">=3.7" },
+    { name = "ratelimit", specifier = ">=2.2.1" },
     { name = "unstructured", specifier = ">=0.16.20" },
 ]
 
@@ -1477,6 +1479,12 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/66/18/11052be5984d9972eb04a52e2931e19e95b2e87731d179f60b79707b7efd/rapidfuzz-3.12.1-cp313-cp313-win_amd64.whl", hash = "sha256:6f7e92fc7d2a7f02e1e01fe4f539324dfab80f27cb70a30dd63a95445566946b", size = 1610169 },
     { url = "https://files.pythonhosted.org/packages/db/c1/66427c618f000298edbd24e46dd3dd2d3fa441a602701ba6a260d41dd62b/rapidfuzz-3.12.1-cp313-cp313-win_arm64.whl", hash = "sha256:e31be53d7f4905a6a038296d8b773a79da9ee9f0cd19af9490c5c5a22e37d2e5", size = 863036 },
 ]
+
+[[package]]
+name = "ratelimit"
+version = "2.2.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ab/38/ff60c8fc9e002d50d48822cc5095deb8ebbc5f91a6b8fdd9731c87a147c9/ratelimit-2.2.1.tar.gz", hash = "sha256:af8a9b64b821529aca09ebaf6d8d279100d766f19e90b5059ac6a718ca6dee42", size = 5251 }
 
 [[package]]
 name = "regex"

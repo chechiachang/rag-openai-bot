@@ -20,8 +20,8 @@ class DocumentManager:
             #loader_kwargs={"mode":"elements"},
             )
         self.documents = loader.load()
-        print(f"=====Loaded {len(self.documents)} documents")
-        print(f"=====First document: {self.documents[0]}")
+        #print(f"=====Loaded {len(self.documents)} documents")
+        #print(f"=====First document: {self.documents[0]}")
 
     def split_documents(self):
         headers_to_split_on = [("#", "Header 1"), ("##", "Header 2"), ("###", "Header 3"), ("####", "Header 4")]
@@ -32,11 +32,17 @@ class DocumentManager:
         for doc in self.documents:
             sections = text_splitter.split_text(doc.page_content)
 
-            for section in sections:
+            for i in range(len(sections)):
                 # keep metadata from the original document
                 metadata = dict(doc.metadata)
-                metadata.update(section.metadata)
-                section.metadata = metadata
+                metadata.update(sections[i].metadata)
+                metadata.update({"split": f"{i+1}/{len(sections)}"})
+                sections[i].metadata = metadata
+            #for section in sections:
+            #    # keep metadata from the original document
+            #    metadata = dict(doc.metadata)
+            #    metadata.update(section.metadata)
+            #    section.metadata = metadata
 
             self.all_sections.extend(sections)
 
