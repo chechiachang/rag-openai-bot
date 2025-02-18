@@ -1,7 +1,9 @@
-from .bot import embedding, conversation
+from .bot import conversation
+from .bot import persist_embeddings
+
 
 def embedding():
-    embedding()
+    persist_embeddings()
 
 def qa():
     conversation()

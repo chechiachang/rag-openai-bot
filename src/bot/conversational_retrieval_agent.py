@@ -1,6 +1,8 @@
-from langchain_openai import AzureChatOpenAI
-from langchain.chains import ConversationalRetrievalChain
 import os
+
+from langchain.chains import ConversationalRetrievalChain
+from langchain_openai import AzureChatOpenAI
+
 
 class ConversationalRetrievalAgent:
     # Initialize the ConversationalRetrievalAgent with a vector database and a temperature for the OpenAI model
@@ -11,6 +13,10 @@ class ConversationalRetrievalAgent:
             azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
             azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
             openai_api_version=os.environ["AZURE_OPENAI_API_VERSION"],
+            #rate_limiter=InMemoryRateLimiter(
+            #    requests_per_second=60,
+            #    check_every_n_seconds=1,
+            #)
         )
         self.chat_history = []
 
@@ -38,18 +44,30 @@ class ConversationalRetrievalAgent:
 
     def generate_prompt(self, question):
         if not self.chat_history:
-            print("First question")
             # Se è la prima domanda, usa un template specifico senza contesto di conversazione precedente
-            prompt = f"You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. \nQuestion: {question}\nContext: \nAnswer:"
+            prompt = f"""You are an assistant for question-answering tasks.
+            Use the following pieces of retrieved context to answer the question.
+            If you don't know the answer, just say that you don't know.
+            Question: {question}
+            Context: \n
+            Answer:
+            """
         else:
             # If it is the first question, use a specific template without previous conversation context
             print("Chat with previous history")
             context_entries = [f"Question: {q}\nAnswer: {a}" for q, a in self.chat_history[-3:]]
             context = "\n\n".join(context_entries)
-            prompt = f"Using the context provided by recent conversations, answer the new question in a concise and informative. Limit your answer to a maximum of three sentences.\n\nContext of recent conversations:\n{context}\n\nNew question: {question}\n\Answer:"
-        
+            prompt = f"""Using the context provided by recent conversations,
+            answer the new question in a concise and informative.
+            Limit your answer to a maximum of three sentences.
+            Context of recent conversations:
+                {context}
+            New question: {question}
+            Answer:
+            """
+
         return prompt
-    
+
     # Method to ask a question to the bot
     def ask_question(self, query):
         prompt = self.generate_prompt(query)
@@ -57,6 +75,6 @@ class ConversationalRetrievalAgent:
         result = self.bot.invoke({"question": prompt, "chat_history": self.chat_history})
         # Append the question and the bot's answer to the chat history
         self.chat_history.append((query, result["answer"]))
-        
+
         # Return the bot's answer
         return result["answer"]
