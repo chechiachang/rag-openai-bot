@@ -2,12 +2,15 @@ import os
 
 from langchain.chains import ConversationalRetrievalChain
 from langchain_openai import AzureChatOpenAI
+from ratelimit import limits
+from ratelimit import sleep_and_retry
+
+from .embedding_manager import EmbeddingManager
 
 
 class ConversationalRetrievalAgent:
     # Initialize the ConversationalRetrievalAgent with a vector database and a temperature for the OpenAI model
-    def __init__(self, vectordb, temperature=0.5):
-        self.vectordb = vectordb
+    def __init__(self, temperature=0.5):
         self.llm = AzureChatOpenAI(
             temperature=temperature,
             azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
@@ -29,6 +32,8 @@ class ConversationalRetrievalAgent:
 
     # Method to set up the bot
     def setup_bot(self):
+        embed_manager = EmbeddingManager()
+        self.vectordb = embed_manager.vectordb
         # Create a retriever from the vector database
         retriever = self.vectordb.as_retriever(
             search_type="similarity",
@@ -68,7 +73,8 @@ class ConversationalRetrievalAgent:
 
         return prompt
 
-    # Method to ask a question to the bot
+    @sleep_and_retry
+    @limits(calls=600, period=60)
     def ask_question(self, query):
         prompt = self.generate_prompt(query)
         # Invoke the bot with the question and the chat history

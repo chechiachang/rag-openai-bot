@@ -11,13 +11,15 @@ dependencies = [
     "langchain-qdrant>=0.2.0",
     "loguru>=0.7.3",
     "markdown>=3.7",
+    "python-telegram-bot>=21.10",
     "ratelimit>=2.2.1",
     "unstructured>=0.16.20",
 ]
 
 [project.scripts]
-embedding = "bot.cli:embedding"
+bot = "bot.cli:run_bot"
 qa = "bot.cli:qa"
+embedding = "bot.tool:embedding"
 
 [build-system]
 requires = ["hatchling"]
