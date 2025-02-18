@@ -6,7 +6,7 @@ from langchain_qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance
 from qdrant_client.models import VectorParams
-from ratelimit import limits
+from ratelimit import limits, sleep_and_retry
 
 
 class EmbeddingManager:
@@ -39,6 +39,7 @@ class EmbeddingManager:
         for section in all_sections:
             self.add_document(section)
 
+    @sleep_and_retry
     @limits(calls=10, period=1)
     def add_document(self, document):
         # hash the source (url) to get a unique id
