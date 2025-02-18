@@ -1,14 +1,13 @@
-import os
-
-from ratelimit import limits
 import hashlib
-from uuid import uuid4
-
+import os
 
 from langchain_openai import AzureOpenAIEmbeddings
 from langchain_qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
-from qdrant_client.models import VectorParams, Distance
+from qdrant_client.models import Distance
+from qdrant_client.models import VectorParams
+from ratelimit import limits
+
 
 class EmbeddingManager:
     def __init__(self):
@@ -24,7 +23,7 @@ class EmbeddingManager:
             self.client.create_collection(
                collection_name='demo_collection',
                vectors_config=VectorParams(
-                   size=3072, 
+                   size=3072,
                    distance=Distance.COSINE
                 ),
             )
@@ -34,7 +33,7 @@ class EmbeddingManager:
             collection_name='demo_collection',
             embedding=self.openai_embeddings,
         )
-        
+
     # Method to create and persist embeddings
     def create_and_persist_embeddings(self, all_sections):
         for section in all_sections:

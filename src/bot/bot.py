@@ -1,9 +1,10 @@
 from dotenv import find_dotenv
 from dotenv import load_dotenv
 
+from .conversational_retrieval_agent import ConversationalRetrievalAgent
 from .document_manager import DocumentManager
 from .embedding_manager import EmbeddingManager
-from .conversational_retrieval_agent import ConversationalRetrievalAgent
+
 
 def persist_embeddings():
     load_dotenv(find_dotenv(raise_error_if_not_found=True, usecwd=True))
