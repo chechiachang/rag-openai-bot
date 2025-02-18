@@ -1,33 +1,56 @@
+import os
+
 from dotenv import find_dotenv
 from dotenv import load_dotenv
+from loguru import logger
+from telegram import Update
+from telegram.ext import Application
+from telegram.ext import CommandHandler
+from telegram.ext import ContextTypes
+from telegram.ext import filters
 
 from .conversational_retrieval_agent import ConversationalRetrievalAgent
-from .document_manager import DocumentManager
-from .embedding_manager import EmbeddingManager
+from .utils import get_message_text
 
 
-def persist_embeddings():
+def get_chat_filter() -> filters.BaseFilter:
+    whitelist = os.getenv("BOT_WHITELIST")
+    if not whitelist:
+        logger.warning("No whitelist specified, allowing all chats")
+        return filters.ALL
+    else:
+        chat_ids = [int(chat_id) for chat_id in whitelist.replace(" ", "").split(",")]
+        return filters.Chat(chat_ids)
+
+def get_bot_token() -> str:
+    token = os.getenv("BOT_TOKEN")
+    if not token:
+        raise ValueError("BOT_TOKEN is not set")
+    return token
+
+def run_bot() -> None:
     load_dotenv(find_dotenv(raise_error_if_not_found=True, usecwd=True))
+    chat_filter = get_chat_filter()
 
-    embed_manager = EmbeddingManager()
+    app = Application.builder().token(get_bot_token()).build()
+    app.add_handlers(
+        [
+            CommandHandler("k8s", k8s_qa, filters=chat_filter),
+        ]
+    )
 
-    data_path = "data/kubernetes-docs/"
-    #data_path = "data/kubernetes-docs/docs/concepts/extend-kubernetes/"
-    doc_manager = DocumentManager(data_path)
-    doc_manager.load_documents()
-    doc_manager.split_documents()
-    embed_manager.create_and_persist_embeddings(doc_manager.all_sections)
+    app.run_polling(allowed_updates=Update.ALL_TYPES)
 
-    print(embed_manager.count())
-
-def conversation():
-    load_dotenv(find_dotenv(raise_error_if_not_found=True, usecwd=True))
-
-    embed_manager = EmbeddingManager()
-    bot = ConversationalRetrievalAgent(embed_manager.vectordb)
+async def k8s_qa(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    bot = ConversationalRetrievalAgent()
     bot.setup_bot()
 
-    #question = "How to extend kubernetes?"
-    question = "How to provision pod network?"
-    print(question)
-    print(bot.ask_question(question))
+    text = get_message_text(update)
+    if not text:
+        return
+    logger.info(f"Received message: {text}")
+
+    question = text.replace("/k8s", "").strip()
+    answer = bot.ask_question(question)
+
+    await update.message.reply_text(answer)
