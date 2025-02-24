@@ -4,11 +4,11 @@ import os
 from dotenv import find_dotenv
 from dotenv import load_dotenv
 from loguru import logger
-from slack import DocumentRetrieverTemplate
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
 from .conversational_retrieval_agent import ConversationalRetrievalAgent
+from .slack_template import DocumentRetrieverTemplate
 
 load_dotenv(find_dotenv(raise_error_if_not_found=True, usecwd=True))
 bot = ConversationalRetrievalAgent()
@@ -37,7 +37,7 @@ def document_retrieve(ack, respond, command, say):
     template.set_title(question)
     template.set_user(command['user_name'])
     say(
-        attachments = template.attachements(answer),
+        attachments = template.attachments(answer),
         text = "" # placeholder
     )
 

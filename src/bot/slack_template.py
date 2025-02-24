@@ -19,16 +19,16 @@ class DocumentRetrieverTemplate:
     def set_title(self, title):
         self.title = title
 
-    def attachements(self, prediction):
+    def attachments(self, attachment):
         return [
             {
                 "fallback": "Plain-text summary of the attachment.",
                 "color": "#" + secrets.token_hex(3),
-                "blocks": self.blocks(prediction),
+                "blocks": self.blocks(attachment),
             }
         ]
 
-    def blocks(self, prediction):
+    def blocks(self, block):
         result = [
             {
                 "type": "header",
@@ -46,29 +46,29 @@ class DocumentRetrieverTemplate:
                 }
             }
         ]
-        for idx, answer in enumerate(prediction['answers']):
-            result.append(
-                {
-                    "type": "divider"
-                }
-            )
-            result.append(
-                {
-                    "type": "section",
-                    "text": {
-                    "type": "mrkdwn",
-                    "text": emoji_mapping[idx+1] +
-                    f" *{answer.answer}*\n {answer.context} \n _score:{answer.score:f}_"
-                },
-                    #"accessory": {
-                    #	"type": "button",
-                    #	"text": {
-                    #		"type": "plain_text",
-                    #		"emoji": True,
-                    #		"text": "Vote"
-                    #	},
-                    #	"value": "click_me_123"
-                    #}
-                }
-            )
+        # for loop for blocks
+        idx = 0
+        result.append(
+            {
+                "type": "divider"
+            }
+        )
+        result.append(
+            {
+                "type": "section",
+                "text": {
+                "type": "mrkdwn",
+                "text": emoji_mapping[idx+1] + f"*{block}*"
+            },
+                #"accessory": {
+                #	"type": "button",
+                #	"text": {
+                #		"type": "plain_text",
+                #		"emoji": True,
+                #		"text": "Vote"
+                #	},
+                #	"value": "click_me_123"
+                #}
+            }
+        )
         return result
