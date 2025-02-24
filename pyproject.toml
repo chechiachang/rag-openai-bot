@@ -13,11 +13,13 @@ dependencies = [
     "markdown>=3.7",
     "python-telegram-bot>=21.10",
     "ratelimit>=2.2.1",
+    "slack-bolt>=1.22.0",
     "unstructured>=0.16.20",
 ]
 
 [project.scripts]
-bot = "bot.cli:run_bot"
+telegram = "bot.cli:run_telegram"
+slack = "bot.cli:run_slack"
 qa = "bot.cli:qa"
 embedding = "bot.tool:embedding"
 
