@@ -1,14 +1,13 @@
-from __future__ import annotations
 
-import logging, os
+import os
 
 from dotenv import find_dotenv
 from dotenv import load_dotenv
 from loguru import logger
+from slack import DocumentRetrieverTemplate
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
-from . import slack
 from .conversational_retrieval_agent import ConversationalRetrievalAgent
 
 load_dotenv(find_dotenv(raise_error_if_not_found=True, usecwd=True))
@@ -32,11 +31,11 @@ def document_retrieve(ack, respond, command, say):
     question = command['text']
     answer = bot.ask_question(question)
 
-    logger.info(anwser)
+    logger.info(answer)
 
     template = DocumentRetrieverTemplate()
-    template.setTitle(question)
-    template.setUser(command['user_name'])
+    template.set_title(question)
+    template.set_user(command['user_name'])
     say(
         attachments = template.attachements(answer),
         text = "" # placeholder
@@ -47,8 +46,8 @@ def answer_question_from_quip(ack, respond, command, say):
     ack()
     question = command['text']
     answer = bot.ask_question(question)
-    
-    logger.info(anwser)
+
+    logger.info(answer)
 
     # TODO: template
     say(
@@ -61,8 +60,8 @@ def update_emoji(event, say):
     event from Slack. Update timestamp for welcome message as well.
     """
     # Get the ids of the Slack user and channel associated with the incoming event
-    channel_id = event.get("item", {}).get("channel")
-    user_id = event.get("user")
+    event.get("item", {}).get("channel")
+    event.get("user")
     reaction = event["reaction"]
 
     logger.info(event)
@@ -71,17 +70,15 @@ def update_emoji(event, say):
 
     if reaction == "scroll":
         # TODO
-        #say(
-        #    text = "scroll"
-        #)
+        say("scroll")
 
     elif reaction == "question":
         # TODO mark the question task
-        #say("question")
+        say("question")
 
     elif reaction == "raising_hand":
         # TODO mark the anwser
-        #say("raising_hand")
+        say("raising_hand")
 
     # Post the message in Slack
     #updated_message = client.chat_update(**message)
@@ -103,21 +100,21 @@ def message(event, say):
 
 # ===WIP===
 
-@app.command("/learn")
-def faq_learn(ack, respond, command):
-    ack()
-    respond(f"{command['text']}")
-    text = command['text']
-
-    # TODO send text to llm
-    if text == "start":
-        respond(f"{command['text']}")
-
-@app.command("/answer")
-def faq_answer(ack, respond, command):
-    ack()
-    # TODO anwser the question with agent
-    if text == "start":
-        respond(f"{command['text']}")
-    else:
-        respond(f"I don't know what you mean by {command['text']}")
+#@app.command("/learn")
+#def faq_learn(ack, respond, command):
+#    ack()
+#    respond(f"{command['text']}")
+#    text = command['text']
+#
+#    # TODO send text to llm
+#    if text == "start":
+#        respond(f"{command['text']}")
+#
+#@app.command("/answer")
+#def faq_answer(ack, respond, command):
+#    ack()
+#    # TODO anwser the question with agent
+#    if text == "start":
+#        respond(f"{command['text']}")
+#    else:
+#        respond(f"I don't know what you mean by {command['text']}")

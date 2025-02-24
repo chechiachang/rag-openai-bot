@@ -13,62 +13,62 @@ class DocumentRetrieverTemplate:
         self.user_id = "dummy_user"
         self.title = "dummy title"
 
-    def setUser(self, user_id):
+    def set_user(self, user_id):
         self.user_id = user_id
 
-    def setTitle(self, title):
+    def set_title(self, title):
         self.title = title
 
     def attachements(self, prediction):
-        return [{
-            "fallback": "Plain-text summary of the attachment.",
-            "color": "#" + secrets.token_hex(3),
-            "blocks": self.blocks(prediction),
-        }]
+        return [
+            {
+                "fallback": "Plain-text summary of the attachment.",
+                "color": "#" + secrets.token_hex(3),
+                "blocks": self.blocks(prediction),
+            }
+        ]
 
     def blocks(self, prediction):
         result = [
             {
-		    	"type": "header",
-		    	"text": {
-		    		"type": "plain_text",
+                "type": "header",
+                "text": {
+                    "type": "plain_text",
                     "text": (self.title[:147] + '..') if len(self.title) > 150 else self.title,
-		    		"emoji": True
-		    	}
-		    },
+                    "emoji": True
+                }
+            },
             {
-    			"type": "section",
-    			"text": {
-    				"type": "mrkdwn",
-    				"text": "Asked by <@%s>" % (self.user_id)
-    			}
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": f"Asked by <@{self.user_id}>"
+                }
             }
         ]
         for idx, answer in enumerate(prediction['answers']):
             result.append(
-    		    {
-    		    	"type": "divider"
-    		    }
+                {
+                    "type": "divider"
+                }
             )
             result.append(
-    		    {
-    		    	"type": "section",
-    		    	"text": {
-    		    		"type": "mrkdwn",
-                        "text": emoji_mapping[idx+1] + " *%s*\n %s \n _score:%f_" % (
-                            answer.answer,
-                            answer.context,
-                            answer.score)
-    		    	},
+                {
+                    "type": "section",
+                    "text": {
+                    "type": "mrkdwn",
+                    "text": emoji_mapping[idx+1] +
+                    f" *{answer.answer}*\n {answer.context} \n _score:{answer.score:f}_"
+                },
                     #"accessory": {
-    		    	#	"type": "button",
-    		    	#	"text": {
-    		    	#		"type": "plain_text",
-    		    	#		"emoji": True,
-    		    	#		"text": "Vote"
-    		    	#	},
-    		    	#	"value": "click_me_123"
-    		    	#}
-    		    }
+                    #	"type": "button",
+                    #	"text": {
+                    #		"type": "plain_text",
+                    #		"emoji": True,
+                    #		"text": "Vote"
+                    #	},
+                    #	"value": "click_me_123"
+                    #}
+                }
             )
         return result
