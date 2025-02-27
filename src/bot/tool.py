@@ -3,10 +3,9 @@ from .document_manager import DocumentManager
 from .embedding_manager import EmbeddingManager
 
 
-def persist_embeddings():
-    embed_manager = EmbeddingManager('demo_collection')
+def persist_embeddings(data_path, collection_name):
+    embed_manager = EmbeddingManager(collection_name)
 
-    data_path = "data/kubernetes-docs/"
     doc_manager = DocumentManager(data_path)
     doc_manager.load_documents()
     doc_manager.split_documents()

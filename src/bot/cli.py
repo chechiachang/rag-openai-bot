@@ -7,10 +7,13 @@ from .tool import k8s_qa
 from .tool import persist_embeddings
 
 
-def embedding():
+def embedding_k8s():
     load_dotenv(find_dotenv(raise_error_if_not_found=True, usecwd=True))
+    persist_embeddings(data_path="data/kubernetes-docs/", collection_name="demo_collection")
 
-    persist_embeddings()
+def embedding_quip():
+    load_dotenv(find_dotenv(raise_error_if_not_found=True, usecwd=True))
+    persist_embeddings(data_path="data/quip/", collection_name="quip")
 
 def qa():
     load_dotenv(find_dotenv(raise_error_if_not_found=True, usecwd=True))
