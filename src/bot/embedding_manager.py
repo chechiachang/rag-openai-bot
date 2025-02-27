@@ -11,7 +11,8 @@ from ratelimit import sleep_and_retry
 
 
 class EmbeddingManager:
-    def __init__(self):
+    def __init__(self, collection_name):
+        self.collection_name = collection_name
         self.openai_embeddings = AzureOpenAIEmbeddings(
             model='text-embedding-3-large',
             azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
@@ -20,9 +21,9 @@ class EmbeddingManager:
         )
         # initialize the qdrant client
         self.client=QdrantClient(host="localhost", port=6333)
-        if not self.client.collection_exists('demo_collection'):
+        if not self.client.collection_exists(self.collection_name):
             self.client.create_collection(
-               collection_name='demo_collection',
+               collection_name=self.collection_name,
                vectors_config=VectorParams(
                    size=3072,
                    distance=Distance.COSINE
@@ -31,7 +32,7 @@ class EmbeddingManager:
         # create the vector store
         self.vectordb = QdrantVectorStore(
             client=self.client,
-            collection_name='demo_collection',
+            collection_name=self.collection_name,
             embedding=self.openai_embeddings,
         )
 
@@ -56,6 +57,6 @@ class EmbeddingManager:
 
     def count(self):
         return self.client.count(
-            collection_name='demo_collection',
+            collection_name=self.collection_name,
             exact=True
         )

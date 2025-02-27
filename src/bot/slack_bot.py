@@ -11,7 +11,7 @@ from .conversational_retrieval_agent import ConversationalRetrievalAgent
 from .slack_template import DocumentRetrieverTemplate
 
 load_dotenv(find_dotenv(raise_error_if_not_found=True, usecwd=True))
-bot = ConversationalRetrievalAgent()
+k8s_bot = ConversationalRetrievalAgent('demo_collection')
 
 # slack
 app = App(
@@ -21,7 +21,7 @@ app = App(
 
 def start_bot():
 
-    bot.setup_bot()
+    k8s_bot.setup_bot()
 
     SocketModeHandler(app, os.environ["SLACK_APP_TOKEN"]).start()
 
@@ -29,7 +29,7 @@ def start_bot():
 def document_retrieve(ack, respond, command, say):
     ack()
     question = command['text']
-    answer = bot.ask_question(question)
+    answer = k8s_bot.ask_question(question)
 
     logger.info(answer)
 
@@ -45,7 +45,7 @@ def document_retrieve(ack, respond, command, say):
 def answer_question_from_quip(ack, respond, command, say):
     ack()
     question = command['text']
-    answer = bot.ask_question(question)
+    answer = k8s_bot.ask_question(question)
 
     logger.info(answer)
 
