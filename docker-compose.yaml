@@ -3,6 +3,9 @@ services:
     container_name: qdrant
     image: qdrant/qdrant:v1.13.3
     restart: on-failure
+    networks:
+    environment:
+      QDRANT__SERVICE__API_KEY: password
     ports:
       - "6333:6333"
       - "6334:6334"
