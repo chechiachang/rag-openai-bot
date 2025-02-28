@@ -1,3 +1,5 @@
+import os
+
 from dotenv import find_dotenv
 from dotenv import load_dotenv
 
@@ -7,13 +9,16 @@ from .tool import k8s_qa
 from .tool import persist_embeddings
 
 
-def embedding_k8s():
+def embedding():
     load_dotenv(find_dotenv(raise_error_if_not_found=True, usecwd=True))
-    persist_embeddings(data_path="data/kubernetes-docs/", collection_name="demo_collection")
-
-def embedding_quip():
-    load_dotenv(find_dotenv(raise_error_if_not_found=True, usecwd=True))
-    persist_embeddings(data_path="data/quip/", collection_name="quip")
+    #persist_embeddings(
+    #    data_path=os.environ.get("DATA_PATH_K8S"),
+    #    collection_name=os.environ.get("QDRANT_COLLECTION_NAME_K8S")
+    #)
+    persist_embeddings(
+        data_path=os.environ.get("DATA_PATH_QUIP"),
+        collection_name=os.environ.get("QDRANT_COLLECTION_NAME_QUIP")
+    )
 
 def qa():
     load_dotenv(find_dotenv(raise_error_if_not_found=True, usecwd=True))

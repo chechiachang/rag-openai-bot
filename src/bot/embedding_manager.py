@@ -20,7 +20,10 @@ class EmbeddingManager:
             openai_api_version=os.environ["AZURE_OPENAI_API_VERSION"],
         )
         # initialize the qdrant client
-        self.client=QdrantClient(host="localhost", port=6333)
+        self.client=QdrantClient(
+            host=os.environ["QDRANT_HOST"],
+            port=os.environ["QDRANT_PORT"],
+        )
         if not self.client.collection_exists(self.collection_name):
             self.client.create_collection(
                collection_name=self.collection_name,

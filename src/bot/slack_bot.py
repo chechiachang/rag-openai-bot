@@ -11,12 +11,14 @@ from .conversational_retrieval_agent import ConversationalRetrievalAgent
 from .slack_template import DocumentRetrieverTemplate
 
 load_dotenv(find_dotenv(raise_error_if_not_found=True, usecwd=True))
-k8s_bot = ConversationalRetrievalAgent('demo_collection')
+k8s_bot = ConversationalRetrievalAgent(
+    collection_name=os.environ["QDRANT_COLLECTION_NAME_K8S"]
+)
 
 # slack
 app = App(
-    token=os.environ.get("SLACK_BOT_TOKEN"),
-    signing_secret=os.environ.get("SLACK_SIGNING_SECRET")
+    token=os.environ["SLACK_BOT_TOKEN"],
+    #signing_secret=os.environ["SLACK_SIGNING_SECRET"]
 )
 
 def start_bot():

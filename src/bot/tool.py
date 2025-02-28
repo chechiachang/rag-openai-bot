@@ -1,3 +1,5 @@
+import os
+
 from .conversational_retrieval_agent import ConversationalRetrievalAgent
 from .document_manager import DocumentManager
 from .embedding_manager import EmbeddingManager
@@ -14,7 +16,9 @@ def persist_embeddings(data_path, collection_name):
     print(embed_manager.count())
 
 def k8s_qa():
-    bot = ConversationalRetrievalAgent('demo_collection')
+    bot = ConversationalRetrievalAgent(
+        collection_name=os.environ["QDRANT_COLLECTION_NAME_K8S"]
+    )
     bot.setup_bot()
 
     question = "How to provision pod network in kubernetes?"
