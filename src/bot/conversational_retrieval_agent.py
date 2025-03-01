@@ -10,7 +10,8 @@ from .embedding_manager import EmbeddingManager
 
 class ConversationalRetrievalAgent:
     # Initialize the ConversationalRetrievalAgent with a vector database and a temperature for the OpenAI model
-    def __init__(self, temperature=0.5):
+    def __init__(self, collection_name, temperature=0.5):
+        self.collection_name = collection_name
         self.llm = AzureChatOpenAI(
             temperature=temperature,
             azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
@@ -32,7 +33,7 @@ class ConversationalRetrievalAgent:
 
     # Method to set up the chain
     def setup_bot(self):
-        embed_manager = EmbeddingManager()
+        embed_manager = EmbeddingManager(self.collection_name)
         self.vectordb = embed_manager.vectordb
         # Create a retriever from the vector database
         retriever = self.vectordb.as_retriever(

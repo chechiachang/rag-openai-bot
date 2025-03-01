@@ -42,7 +42,7 @@ def run_bot() -> None:
     app.run_polling(allowed_updates=Update.ALL_TYPES)
 
 async def k8s_qa(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    bot = ConversationalRetrievalAgent()
+    bot = ConversationalRetrievalAgent('demo_collection')
     bot.setup_bot()
 
     text = get_message_text(update)
