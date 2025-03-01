@@ -1,9 +1,8 @@
 from langchain.text_splitter import MarkdownHeaderTextSplitter
-from langchain_community.document_loaders import DirectoryLoader
-from langchain_community.document_loaders import UnstructuredMarkdownLoader
+from langchain_community.document_loaders import DirectoryLoader, UnstructuredMarkdownLoader
 
 
-class DocumentManager:
+class MarkdownDocumentManager:
     def __init__(self, directory_path, glob_pattern="./**/*.md"):
         self.directory_path = directory_path
         self.glob_pattern = glob_pattern

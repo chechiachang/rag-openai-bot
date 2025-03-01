@@ -20,8 +20,10 @@ dependencies = [
 [project.scripts]
 telegram = "bot.cli:run_telegram"
 slack = "bot.cli:run_slack"
-qa = "bot.cli:qa"
-embedding = "bot.tool:embedding"
+qa_k8s = "bot.cli:qa_k8s"
+qa_quip = "bot.cli:qa_quip"
+embedding_k8s = "bot.cli:embedding_k8s"
+embedding_quip = "bot.cli:embedding_quip"
 
 [build-system]
 requires = ["hatchling"]
