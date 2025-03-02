@@ -36,13 +36,16 @@ def run_bot() -> None:
     app.add_handlers(
         [
             CommandHandler("k8s", k8s_qa, filters=chat_filter),
+            CommandHandler("quip", quip_qa, filters=chat_filter),
         ]
     )
 
     app.run_polling(allowed_updates=Update.ALL_TYPES)
 
 async def k8s_qa(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    bot = ConversationalRetrievalAgent('demo_collection')
+    bot = ConversationalRetrievalAgent(
+        os.environ["QDRANT_COLLECTION_NAME_K8S"]
+    )
     bot.setup_bot()
 
     text = get_message_text(update)
@@ -51,6 +54,22 @@ async def k8s_qa(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     logger.info(f"Received message: {text}")
 
     question = text.replace("/k8s", "").strip()
+    answer = bot.ask_question(question)
+
+    await update.message.reply_text(answer)
+
+async def quip_qa(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    bot = ConversationalRetrievalAgent(
+        os.environ["QDRANT_COLLECTION_NAME_QUIP"]
+    )
+    bot.setup_bot()
+
+    text = get_message_text(update)
+    if not text:
+        return
+    logger.info(f"Received message: {text}")
+
+    question = text.replace("/quip", "").strip()
     answer = bot.ask_question(question)
 
     await update.message.reply_text(answer)

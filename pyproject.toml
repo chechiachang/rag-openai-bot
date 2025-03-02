@@ -9,6 +9,7 @@ dependencies = [
     "langchain-community>=0.3.17",
     "langchain-openai>=0.3.5",
     "langchain-qdrant>=0.2.0",
+    "langchain-text-splitters>=0.3.6",
     "loguru>=0.7.3",
     "markdown>=3.7",
     "python-telegram-bot>=21.10",
@@ -20,8 +21,10 @@ dependencies = [
 [project.scripts]
 telegram = "bot.cli:run_telegram"
 slack = "bot.cli:run_slack"
-qa = "bot.cli:qa"
-embedding = "bot.tool:embedding"
+qa_k8s = "bot.cli:qa_k8s"
+qa_quip = "bot.cli:qa_quip"
+embedding_k8s = "bot.cli:embedding_k8s"
+embedding_quip = "bot.cli:embedding_quip"
 
 [build-system]
 requires = ["hatchling"]
