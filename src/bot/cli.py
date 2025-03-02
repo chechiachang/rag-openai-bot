@@ -62,7 +62,8 @@ def qa_quip():
     )
     bot.setup_bot()
 
-    question = "Influxdb Retention policy"
+    #question = "Influxdb Retention policy"
+    question = "Runbook polygon"
     answer = bot.ask_question(question)
     print(question)
     print(answer)

@@ -54,15 +54,13 @@ class ConversationalRetrievalAgent:
 
     def generate_prompt(self, question):
         if not self.chat_history:
-            prompt = f"""你是一個問答任務的助手。根據 Retrival 的資料內容回答 Kubernetes (k8s) 相關問題
+            prompt = f"""你是一個問答任務的助手。根據 Retrival 的資料內容回答問題
             # 步驟
             1. 根據內容準確回答問題，確保答案清晰且準確，避免加入任何虛構或未經證實的資訊。
             2. 如果內容中沒有直接回答，請根據相關資訊進行合理推斷，但不要編造答案。
             3. 使用符合台灣用語習慣的表達方式，提高可讀性。
             4. 確保最終輸出內容為台灣繁體中文。如果是英文專有名詞，可以在字詞後加註原文。
                例如：「人工智慧（Artificial Intelligence）」。
-            5. 如果內容有文章連結網址，補上網址與域名 https://kubernetes.io/ 並完整顯示。
-               例如文章如有 「/docs/concepts/overview」，則顯示完整網址為 「https://kubernetes.io/docs/concepts/overview」。如果沒有則不顯示。
             6. 如果內容有文章 title，顯示原文 title 不需要翻譯。
             問題：{question}
             """

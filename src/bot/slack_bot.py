@@ -14,6 +14,9 @@ load_dotenv(find_dotenv(raise_error_if_not_found=True, usecwd=True))
 k8s_bot = ConversationalRetrievalAgent(
     collection_name=os.environ["QDRANT_COLLECTION_NAME_K8S"]
 )
+quip_bot = ConversationalRetrievalAgent(
+    collection_name=os.environ["QDRANT_COLLECTION_NAME_QUIP"]
+)
 
 # slack
 app = App(
@@ -24,6 +27,7 @@ app = App(
 def start_bot():
 
     k8s_bot.setup_bot()
+    quip_bot.setup_bot()
 
     SocketModeHandler(app, os.environ["SLACK_APP_TOKEN"]).start()
 
@@ -47,7 +51,7 @@ def document_retrieve(ack, respond, command, say):
 def answer_question_from_quip(ack, respond, command, say):
     ack()
     question = command['text']
-    answer = k8s_bot.ask_question(question)
+    answer = quip_bot.ask_question(question)
 
     logger.info(answer)
 

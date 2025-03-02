@@ -1,6 +1,6 @@
-#from langchain_text_splitters import HTMLSemanticPreservingSplitter
+from langchain_text_splitters import HTMLSemanticPreservingSplitter
 #from langchain_text_splitters import HTMLSectionSplitter
-from langchain.text_splitter import HTMLHeaderTextSplitter
+#from langchain.text_splitter import HTMLHeaderTextSplitter
 from langchain_community.document_loaders import DirectoryLoader, UnstructuredHTMLLoader
 
 
@@ -26,21 +26,22 @@ class HTMLDocumentManager:
         #print(f"=====First document: {self.documents[0]}")
 
     def split_documents(self):
-        #headers_to_split_on = [("h1", "Header 1"), ("h2", "Header 2"), ("h3", "Header 3"), ("h4", "Header 4")]
-        #text_splitter = HTMLSemanticPreservingSplitter(
-        #    headers_to_split_on=headers_to_split_on,
-        #    preserve_links=True,
-        #    elements_to_preserve=["table", "ul", "ol", "code"],
-        #    denylist_tags=["script", "style", "head"],
-        #)
+        headers_to_split_on = [("h1", "Header 1"), ("h2", "Header 2"), ("h3", "Header 3"), ("h4", "Header 4")]
+        text_splitter = HTMLSemanticPreservingSplitter(
+            headers_to_split_on=headers_to_split_on,
+            preserve_links=True,
+            elements_to_preserve=["table", "ul", "ol", "code"],
+            denylist_tags=["script", "style", "head"],
+        )
         #text_splitter = HTMLSectionSplitter(
         #    headers_to_split_on=headers_to_split_on,
         #)
-        headers_to_split_on = [("h1", "Main Topic"), ("h2", "Sub Topic")]
-        text_splitter = HTMLHeaderTextSplitter(
-            headers_to_split_on=headers_to_split_on,
-        )
+        #headers_to_split_on = [("h1", "Main Topic"), ("h2", "Sub Topic")]
+        #text_splitter = HTMLHeaderTextSplitter(
+        #    headers_to_split_on=headers_to_split_on,
+        #)
         for doc in self.documents:
+            print(f"=====Splitting document {doc.metadata['source']}")
             sections = text_splitter.split_text(doc.page_content)
 
             for i in range(len(sections)):
@@ -58,5 +59,5 @@ class HTMLDocumentManager:
             self.all_sections.extend(sections)
 
         print(f"=====Split {len(self.all_sections)} sections")
-        #print(f"=====First section: {self.all_sections[0]}")
-        #print(f"=====Last section: {self.all_sections[-1]}")
+        print(f"=====First section: {self.all_sections[0]}")
+        print(f"=====Last section: {self.all_sections[-1]}")
