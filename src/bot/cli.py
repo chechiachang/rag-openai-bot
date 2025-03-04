@@ -24,7 +24,7 @@ def embedding_k8s():
     )
     doc_manager.load_documents()
     doc_manager.split_documents()
-    embed_manager.create_and_persist_embeddings(doc_manager.all_sections)
+    #embed_manager.create_and_persist_embeddings(doc_manager.all_sections)
 
     print(embed_manager.count())
 
@@ -62,8 +62,8 @@ def qa_quip():
     )
     bot.setup_bot()
 
-    #question = "Influxdb Retention policy"
-    question = "Runbook polygon"
+    question = "Influxdb Retention policy"
+    #question = "Runbook polygon"
     answer = bot.ask_question(question)
     print(question)
     print(answer)

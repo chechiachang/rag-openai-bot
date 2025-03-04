@@ -55,9 +55,12 @@ def answer_question_from_quip(ack, respond, command, say):
 
     logger.info(answer)
 
-    # TODO: template
+    template = DocumentRetrieverTemplate()
+    template.set_title(question)
+    template.set_user(command['user_name'])
     say(
-        text = answer
+        attachments = template.attachments(answer),
+        text = "" # placeholder
     )
 
 @app.event("reaction_added")
