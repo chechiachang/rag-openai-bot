@@ -53,7 +53,7 @@ def embedding_quip():
     )
     doc_manager.load_documents()
     doc_manager.split_documents()
-    #embed_manager.create_and_persist_embeddings(doc_manager.all_sections)
+    embed_manager.create_and_persist_embeddings(doc_manager.all_sections)
 
 def qa_quip():
     load_dotenv(find_dotenv(raise_error_if_not_found=True, usecwd=True))

@@ -37,6 +37,7 @@ def run_bot() -> None:
         [
             CommandHandler("k8s", k8s_qa, filters=chat_filter),
             CommandHandler("quip", quip_qa, filters=chat_filter),
+            CommandHandler("od", od_qa, filters=chat_filter),
         ]
     )
 
@@ -70,6 +71,22 @@ async def quip_qa(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     logger.info(f"Received message: {text}")
 
     question = text.replace("/quip", "").strip()
+    answer = bot.ask_question(question)
+
+    await update.message.reply_text(answer)
+
+async def od_qa(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    bot = ConversationalRetrievalAgent(
+        "od"
+    )
+    bot.setup_bot()
+
+    text = get_message_text(update)
+    if not text:
+        return
+    logger.info(f"Received message: {text}")
+
+    question = text.replace("/od", "").strip()
     answer = bot.ask_question(question)
 
     await update.message.reply_text(answer)
