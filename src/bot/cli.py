@@ -4,12 +4,11 @@ from dotenv import find_dotenv
 from dotenv import load_dotenv
 
 from .conversational_retrieval_agent import ConversationalRetrievalAgent
-from .embedding_manager import EmbeddingManager
-from .document_loader.markdown import MarkdownDocumentManager
 from .document_loader.html import HTMLDocumentManager
+from .document_loader.markdown import MarkdownDocumentManager
+from .embedding_manager import EmbeddingManager
 from .slack_bot import start_bot as run_slack_bot
 from .telegram_bot import run_bot as run_telegram_bot
-
 
 # k8s
 
@@ -24,7 +23,7 @@ def embedding_k8s():
     )
     doc_manager.load_documents()
     doc_manager.split_documents()
-    embed_manager.create_and_persist_embeddings(doc_manager.all_sections)
+    #embed_manager.create_and_persist_embeddings(doc_manager.all_sections)
 
     print(embed_manager.count())
 
@@ -53,7 +52,7 @@ def embedding_quip():
     )
     doc_manager.load_documents()
     doc_manager.split_documents()
-    #embed_manager.create_and_persist_embeddings(doc_manager.all_sections)
+    embed_manager.create_and_persist_embeddings(doc_manager.all_sections)
 
 def qa_quip():
     load_dotenv(find_dotenv(raise_error_if_not_found=True, usecwd=True))
@@ -62,8 +61,8 @@ def qa_quip():
     )
     bot.setup_bot()
 
-    #question = "Influxdb Retention policy"
-    question = "Runbook polygon"
+    question = "Influxdb Retention policy"
+    #question = "Runbook polygon"
     answer = bot.ask_question(question)
     print(question)
     print(answer)

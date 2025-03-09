@@ -17,6 +17,9 @@ k8s_bot = ConversationalRetrievalAgent(
 quip_bot = ConversationalRetrievalAgent(
     collection_name=os.environ["QDRANT_COLLECTION_NAME_QUIP"]
 )
+od_bot = ConversationalRetrievalAgent(
+    "od"
+)
 
 # slack
 app = App(
@@ -28,6 +31,7 @@ def start_bot():
 
     k8s_bot.setup_bot()
     quip_bot.setup_bot()
+    od_bot.setup_bot()
 
     SocketModeHandler(app, os.environ["SLACK_APP_TOKEN"]).start()
 
@@ -55,9 +59,28 @@ def answer_question_from_quip(ack, respond, command, say):
 
     logger.info(answer)
 
-    # TODO: template
+    template = DocumentRetrieverTemplate()
+    template.set_title(question)
+    template.set_user(command['user_name'])
     say(
-        text = answer
+        attachments = template.attachments(answer),
+        text = "" # placeholder
+    )
+
+@app.command("/od")
+def answer_question_from_od(ack, respond, command, say):
+    ack()
+    question = command['text']
+    answer = od_bot.ask_question(question)
+
+    logger.info(answer)
+
+    template = DocumentRetrieverTemplate()
+    template.set_title(question)
+    template.set_user(command['user_name'])
+    say(
+        attachments = template.attachments(answer),
+        text = "" # placeholder
     )
 
 @app.event("reaction_added")

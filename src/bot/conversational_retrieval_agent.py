@@ -62,6 +62,7 @@ class ConversationalRetrievalAgent:
             4. 確保最終輸出內容為台灣繁體中文。如果是英文專有名詞，可以在字詞後加註原文。
                例如：「人工智慧（Artificial Intelligence）」。
             6. 如果內容有文章 title，顯示原文 title 不需要翻譯。
+            7. 如果內容有url，請列出url。
             問題：{question}
             """
             #prompt = f"""You are an assistant for question-answering tasks.

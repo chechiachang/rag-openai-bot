@@ -1,5 +1,6 @@
 from langchain.text_splitter import MarkdownHeaderTextSplitter
-from langchain_community.document_loaders import DirectoryLoader, UnstructuredMarkdownLoader
+from langchain_community.document_loaders import DirectoryLoader
+from langchain_community.document_loaders import UnstructuredMarkdownLoader
 
 
 class MarkdownDocumentManager:
