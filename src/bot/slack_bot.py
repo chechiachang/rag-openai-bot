@@ -68,7 +68,7 @@ def answer_question_from_quip(ack, respond, command, say):
     )
 
 @app.command("/od")
-def answer_question_from_quip(ack, respond, command, say):
+def answer_question_from_od(ack, respond, command, say):
     ack()
     question = command['text']
     answer = od_bot.ask_question(question)

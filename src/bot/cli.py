@@ -4,12 +4,11 @@ from dotenv import find_dotenv
 from dotenv import load_dotenv
 
 from .conversational_retrieval_agent import ConversationalRetrievalAgent
-from .embedding_manager import EmbeddingManager
-from .document_loader.markdown import MarkdownDocumentManager
 from .document_loader.html import HTMLDocumentManager
+from .document_loader.markdown import MarkdownDocumentManager
+from .embedding_manager import EmbeddingManager
 from .slack_bot import start_bot as run_slack_bot
 from .telegram_bot import run_bot as run_telegram_bot
-
 
 # k8s
 

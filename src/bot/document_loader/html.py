@@ -1,5 +1,6 @@
+from langchain_community.document_loaders import DirectoryLoader
+from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import HTMLSemanticPreservingSplitter
-from langchain_community.document_loaders import DirectoryLoader, TextLoader
 
 
 class HTMLDocumentManager:
