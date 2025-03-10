@@ -77,7 +77,7 @@ async def quip_qa(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def od_qa(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     bot = ConversationalRetrievalAgent(
-        "od"
+        os.environ["QDRANT_COLLECTION_NAME_OD"]
     )
     bot.setup_bot()
 

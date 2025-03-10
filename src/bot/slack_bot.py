@@ -18,7 +18,7 @@ quip_bot = ConversationalRetrievalAgent(
     collection_name=os.environ["QDRANT_COLLECTION_NAME_QUIP"]
 )
 od_bot = ConversationalRetrievalAgent(
-    "od"
+    collection_name=os.environ["QDRANT_COLLECTION_NAME_OD"]
 )
 
 # slack
