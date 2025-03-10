@@ -43,6 +43,7 @@ class EmbeddingManager:
     def create_and_persist_embeddings(self, all_sections):
         for section in all_sections:
             self.add_document(section)
+        print(self.count())
 
     @sleep_and_retry
     @limits(calls=600, period=60)
