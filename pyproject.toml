@@ -1,5 +1,5 @@
 [project]
-name = "bot"
+name = "meowth"
 version = "0.1.0"
 description = ""
 readme = "README.md"
@@ -19,12 +19,13 @@ dependencies = [
 ]
 
 [project.scripts]
-telegram = "bot.cli:run_telegram"
-slack = "bot.cli:run_slack"
-qa_k8s = "bot.cli:qa_k8s"
-qa_quip = "bot.cli:qa_quip"
-embedding_k8s = "bot.cli:embedding_k8s"
-embedding_quip = "bot.cli:embedding_quip"
+telegram = "meowth.cli:run_telegram"
+slack = "meowth.cli:run_slack"
+qa_k8s = "meowth.cli:qa_k8s"
+qa_quip = "meowth.cli:qa_quip"
+embedding_k8s = "meowth.cli:embedding_k8s"
+embedding_quip = "meowth.cli:embedding_quip"
+quip = "script.main:main"
 
 [build-system]
 requires = ["hatchling"]
