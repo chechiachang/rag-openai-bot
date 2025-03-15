@@ -18,7 +18,7 @@ quip_bot = ConversationalRetrievalAgent(
     collection_name=os.environ["QDRANT_COLLECTION_NAME_QUIP"]
 )
 od_bot = ConversationalRetrievalAgent(
-    "od"
+    collection_name=os.environ["QDRANT_COLLECTION_NAME_OD"]
 )
 
 # slack
@@ -57,7 +57,7 @@ def answer_question_from_quip(ack, respond, command, say):
     question = command['text']
     answer = quip_bot.ask_question(question)
 
-    logger.info(answer)
+    logger.debug(answer)
 
     template = DocumentRetrieverTemplate()
     template.set_title(question)
@@ -73,7 +73,7 @@ def answer_question_from_od(ack, respond, command, say):
     question = command['text']
     answer = od_bot.ask_question(question)
 
-    logger.info(answer)
+    logger.debug(answer)
 
     template = DocumentRetrieverTemplate()
     template.set_title(question)
