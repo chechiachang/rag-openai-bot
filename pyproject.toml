@@ -40,7 +40,7 @@ dev = [
     "toml>=0.10.2",
     "pip>=24.2",
     "types-cachetools>=5.5.0.20240820",
-    "types-pytz>=2024.2.0.20241003",
+    "types-pytz>=2026.5.0.20261006",
     "types-redis>=4.6.0.20241004",
     "types-pyyaml>=6.0.12.20240917",
 ]
